@@ -1,0 +1,88 @@
+﻿using System;
+using System.Drawing;
+using System.Windows.Forms;
+
+namespace CineSulApp
+{
+    public class FormFavoritos : Form
+    {
+        private FlowLayoutPanel flowFavoritos;
+        private string categoriaAtual = "Comédia";
+
+        public FormFavoritos()
+        {
+            ConfigurarTela();
+            ConstruirInterface();
+        }
+
+        private void ConfigurarTela()
+        {
+            this.Text = "Filmes favoritos - Cíne Sul";
+            this.Size = new Size(1024, 900);
+            this.BackColor = Color.FromArgb(10, 15, 28);
+            this.StartPosition = FormStartPosition.CenterScreen;
+        }
+
+        private void ConstruirInterface()
+        {
+            // Header
+            this.Controls.Add(NavigationHelper.CreateHeader(this));
+
+            // Area principal
+            Panel main = new Panel { Dock = DockStyle.Fill, Padding = new Padding(40, 20, 40, 20) };
+            this.Controls.Add(main);
+            main.BringToFront();
+
+            Label lblTitulo = new Label { Text = "Filmes favoritos", ForeColor = Color.White, Font = new Font("Segoe UI", 20, FontStyle.Bold), Location = new Point(40, 20), AutoSize = true };
+            main.Controls.Add(lblTitulo);
+
+            // Barra de categorias
+            string[] categorias = { "Comédia", "Ação", "Romance", "Terror", "Animação", "Drama" };
+            int posX = 40;
+            foreach (var cat in categorias)
+            {
+                Button btn = new Button { Text = cat, Size = new Size(110, 36), Location = new Point(posX, 80), FlatStyle = FlatStyle.Flat, ForeColor = Color.White, BackColor = Color.FromArgb(24, 28, 34) };
+                btn.FlatAppearance.BorderSize = 0;
+                btn.Click += (s, e) => { categoriaAtual = cat; CarregarFavoritos(cat); };
+                main.Controls.Add(btn);
+                posX += 120;
+            }
+
+            Panel linha = new Panel { Size = new Size(920, 1), Location = new Point(40, 130), BackColor = Color.FromArgb(40, 45, 60) };
+            main.Controls.Add(linha);
+
+            flowFavoritos = new FlowLayoutPanel { Location = new Point(40, 150), Size = new Size(920, 600), AutoScroll = true, BackColor = Color.Transparent };
+            main.Controls.Add(flowFavoritos);
+
+            CarregarFavoritos(categoriaAtual);
+        }
+
+        private void CarregarFavoritos(string categoria)
+        {
+            flowFavoritos.Controls.Clear();
+            // Dados fictícios — em produção você buscaria do banco os favoritos do usuário
+            if (categoria == "Comédia")
+            {
+                flowFavoritos.Controls.Add(CriarCard("Minions", "Comédia • 91 min"));
+                flowFavoritos.Controls.Add(CriarCard("Meu malvado favorito", "Comédia • 95 min"));
+            }
+            else
+            {
+                flowFavoritos.Controls.Add(CriarCard($"{categoria} - Filme 1", $"{categoria} • 120 min"));
+            }
+        }
+
+        private Panel CriarCard(string titulo, string detalhes)
+        {
+            Panel card = new Panel { Size = new Size(200, 240), Margin = new Padding(10), BackColor = Color.FromArgb(24, 24, 32) };
+            Panel poster = new Panel { Size = new Size(200, 140), BackColor = Color.FromArgb(40, 40, 50), Dock = DockStyle.Top };
+            Label lblTitulo = new Label { Text = titulo, ForeColor = Color.White, Font = new Font("Segoe UI", 10, FontStyle.Bold), Location = new Point(5, 150), Size = new Size(190, 22) };
+            Label lblDetalhes = new Label { Text = detalhes, ForeColor = Color.Gray, Font = new Font("Segoe UI", 8), Location = new Point(5, 175), Size = new Size(190, 20) };
+            Button btnRemover = new Button { Text = "Remover", Size = new Size(80, 28), Location = new Point(60, 200), BackColor = Color.FromArgb(63, 114, 252), ForeColor = Color.White, FlatStyle = FlatStyle.Flat };
+            btnRemover.FlatAppearance.BorderSize = 0;
+            btnRemover.Click += (s, e) => { flowFavoritos.Controls.Remove(card); };
+            card.Controls.AddRange(new Control[] { poster, lblTitulo, lblDetalhes, btnRemover });
+            return card;
+        }
+    }
+}

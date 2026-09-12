@@ -1,0 +1,91 @@
+﻿using CineSul;
+using System;
+using System.Drawing;
+using System.Windows.Forms;
+
+namespace CineSulApp
+{
+    public partial class Form7 : Form
+    {
+        public Form7()
+        {
+            InitializeComponent();
+            {
+                this.FormBorderStyle = FormBorderStyle.None; // Remove as bordas e a barra de título
+                this.WindowState = FormWindowState.Maximized; // Ocupa a tela inteira, cobrindo a barra de tarefas
+
+            }
+            ConfigurarTela();
+            ConstruirInterface();
+        }
+
+        private void ConfigurarTela()
+        {
+            this.Text = "Dados do Cartão - Cíne Sul";
+            this.Size = new Size(1024, 900);
+            this.BackColor = Color.FromArgb(10, 15, 28);
+            this.StartPosition = FormStartPosition.CenterScreen;
+        }
+
+        private void ConstruirInterface()
+        {
+            // HEADER padronizado
+            this.Controls.Add(NavigationHelper.CreateHeader(this));
+
+            // SIDEBAR LATERAL DINÂMICA
+            Panel sidebar = CriarSidebarLateral();
+            this.Controls.Add(sidebar);
+
+            // CONTAINER DO FORMULÁRIO (Design Retangular Escuro)
+            Panel formCard = new Panel { Size = new Size(640, 400), Location = new Point(290, 120), BackColor = Color.FromArgb(34, 34, 42) };
+            this.Controls.Add(formCard);
+
+            // Campos
+            TextBox txtNumero = CriarCampoTexto(formCard, "Número do cartão", "1234 5678 9012 3456", 40, 30, 560);
+            TextBox txtValidade = CriarCampoTexto(formCard, "Data de validade", "MM/AA", 40, 120, 260);
+            TextBox txtCvv = CriarCampoTexto(formCard, "Código de segurança", "3 dígitos", 340, 120, 260);
+            TextBox txtNome = CriarCampoTexto(formCard, "Nome no cartão", "Nome completo do titular", 40, 210, 560);
+
+            // Botão Finalizar
+            Button btnFinalizar = new Button { Text = "Finalizar pagamento", Size = new Size(240, 45), Location = new Point(200, 310), BackColor = Color.FromArgb(13, 71, 161), ForeColor = Color.White, FlatStyle = FlatStyle.Flat, Font = new Font("Segoe UI", 11, FontStyle.Bold) };
+            btnFinalizar.FlatAppearance.BorderSize = 0;
+            btnFinalizar.Click += (s, e) => {
+                if (string.IsNullOrWhiteSpace(txtNumero.Text) || string.IsNullOrWhiteSpace(txtNome.Text))
+                {
+                    MessageBox.Show("Preencha os campos obrigatórios do cartão.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+                else
+                {
+                    Form8 telaSucesso = new Form8();
+                    telaSucesso.Show();
+                    this.Hide();
+                }
+            };
+            formCard.Controls.Add(btnFinalizar);
+        }
+
+        private TextBox CriarCampoTexto(Panel pai, string labelText, string placeholder, int x, int y, int largura)
+        {
+            Label lbl = new Label { Text = labelText, ForeColor = Color.LightGray, Font = new Font("Segoe UI", 10, FontStyle.Bold), Location = new Point(x, y), AutoSize = true };
+            TextBox txt = new TextBox { Location = new Point(x, y + 25), Size = new Size(largura, 30), BackColor = Color.FromArgb(50, 50, 58), ForeColor = Color.White, BorderStyle = BorderStyle.FixedSingle, Font = new Font("Segoe UI", 11) };
+
+            pai.Controls.AddRange(new Control[] { lbl, txt });
+            return txt;
+        }
+
+        private Panel CriarSidebarLateral()
+        {
+            Panel sidebar = new Panel { Dock = DockStyle.Left, Width = 240, BackColor = Color.FromArgb(8, 11, 20), Padding = new Padding(20) };
+            Label lblFilme = new Label { Text = DadosCinema.FilmeSelecionado, ForeColor = Color.White, Font = new Font("Segoe UI", 12, FontStyle.Bold), Location = new Point(20, 30), Size = new Size(200, 50) };
+            Label lblSessao = new Label { Text = $"{DadosCinema.CinemaSelecionado}\n\nSessão: {DadosCinema.HorarioSelecionado}", ForeColor = Color.Silver, Font = new Font("Segoe UI", 9), Location = new Point(20, 90), Size = new Size(200, 80) };
+
+            Panel boxValores = new Panel { Size = new Size(200, 120), Location = new Point(20, 220), BackColor = Color.FromArgb(24, 28, 40) };
+            Label lblItens = new Label { Text = $"Itens: {DadosCinema.TotalItens}", ForeColor = Color.White, Font = new Font("Segoe UI", 9), Location = new Point(15, 20), AutoSize = true };
+            Label lblTotal = new Label { Text = $"Total: R$ {DadosCinema.TotalValor:N2}", ForeColor = Color.LimeGreen, Font = new Font("Segoe UI", 12, FontStyle.Bold), Location = new Point(15, 65), AutoSize = true };
+            boxValores.Controls.AddRange(new Control[] { lblItens, lblTotal });
+
+            sidebar.Controls.AddRange(new Control[] { lblFilme, lblSessao, boxValores });
+            return sidebar;
+        }
+    }
+}

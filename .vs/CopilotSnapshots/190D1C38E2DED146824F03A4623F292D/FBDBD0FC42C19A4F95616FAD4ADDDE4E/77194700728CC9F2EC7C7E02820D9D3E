@@ -1,0 +1,233 @@
+﻿using System;
+using System.Configuration;
+using Npgsql;
+using System.Drawing;
+using System.Windows.Forms;
+
+namespace CineSulApp
+{
+    public partial class FormLogin : Form
+    {
+        private TextBox txtEmail;
+        private TextBox txtSenha;
+        private Panel central;
+        // Conexão direta ao PostgreSQL (inline)
+        private readonly string pgConnString = "Host=localhost;Port=5432;Database=cinesuldb;Username=postgres;Password=317rosa2018;";
+
+        public FormLogin()
+        {
+            ConfigurarTela();
+            ConstruirInterface();
+        }
+
+        private void ConfigurarTela()
+        {
+            this.Text = "Login - Cíne Sul";
+            this.Size = new Size(1024, 900);
+            this.BackColor = Color.FromArgb(13, 16, 26);
+            this.StartPosition = FormStartPosition.CenterScreen;
+        }
+
+        private void ConstruirInterface()
+        {
+            this.Controls.Add(NavigationHelper.CriarHeader(this));
+
+            central = new Panel
+            {
+                Size = new Size(500, 450),
+                Location = new Point((this.ClientSize.Width - 500) / 2, 100),
+                BackColor = Color.Transparent
+            };
+
+            Label lblBemVindo = new Label
+            {
+                Text = "Bem-vindo(a) de volta!",
+                ForeColor = Color.White,
+                Font = new Font("Segoe UI", 16, FontStyle.Bold),
+                TextAlign = ContentAlignment.MiddleCenter,
+                Size = new Size(500, 40),
+                Location = new Point(0, 10)
+            };
+
+            txtEmail = CriarTextBoxArredondado("• Email", 80, central);
+            txtSenha = CriarTextBoxArredondado("• Senha", 140, central, true);
+
+            Button btnEntrar = new Button
+            {
+                Text = "Entrar",
+                Size = new Size(320, 42),
+                Location = new Point(90, 205),
+                BackColor = Color.FromArgb(24, 28, 38),
+                ForeColor = Color.White,
+                Font = new Font("Segoe UI", 10, FontStyle.Bold),
+                FlatStyle = FlatStyle.Flat,
+                Cursor = Cursors.Hand
+            };
+            btnEntrar.FlatAppearance.BorderColor = Color.FromArgb(63, 114, 252);
+            btnEntrar.FlatAppearance.BorderSize = 2;
+            btnEntrar.Click += BtnEntrar_Click;
+
+            Label lblEsqueceu = new Label
+            {
+                Text = "Esqueceu a sua senha?",
+                ForeColor = Color.Silver,
+                Font = new Font("Segoe UI", 9),
+                TextAlign = ContentAlignment.MiddleCenter,
+                Size = new Size(500, 25),
+                Location = new Point(0, 260),
+                Cursor = Cursors.Hand
+            };
+
+            Label lblCriarConta = new Label
+            {
+                Text = "Não tem uma conta ainda? Crie uma agora!",
+                ForeColor = Color.Silver,
+                Font = new Font("Segoe UI", 9),
+                TextAlign = ContentAlignment.MiddleCenter,
+                Size = new Size(500, 25),
+                Location = new Point(0, 295),
+                Cursor = Cursors.Hand
+            };
+
+            lblCriarConta.Click += (s, e) =>
+            {
+                FormCadastro cadastro = new FormCadastro();
+                cadastro.Show();
+                this.Hide();
+            };
+
+            lblEsqueceu.Click += (s, e) =>
+            {
+                FormEsqueceuSenha recuperarSenha = new FormEsqueceuSenha();
+                recuperarSenha.Show();
+                this.Hide();
+            };
+
+            central.Controls.AddRange(new Control[] { lblBemVindo, btnEntrar, lblEsqueceu, lblCriarConta });
+            this.Controls.Add(central);
+
+            // Mantém a caixa centralizada ao redimensionar
+            this.Resize += (s, e) =>
+            {
+                central.Location = new Point((this.ClientSize.Width - central.Width) / 2, 100);
+            };
+        }
+
+        private TextBox CriarTextBoxArredondado(string placeholder, int posY, Panel container, bool isPassword = false)
+        {
+            Panel pnlBg = new Panel
+            {
+                Size = new Size(320, 42),
+                Location = new Point(90, posY),
+                BackColor = Color.FromArgb(38, 42, 50)
+            };
+
+            TextBox txt = new TextBox
+            {
+                Text = placeholder,
+                ForeColor = Color.Gray,
+                Font = new Font("Segoe UI", 10),
+                Size = new Size(290, 25),
+                Location = new Point(15, 9),
+                BackColor = Color.FromArgb(38, 42, 50),
+                BorderStyle = BorderStyle.None
+            };
+
+            txt.Enter += (s, e) =>
+            {
+                if (txt.Text == placeholder)
+                {
+                    txt.Text = "";
+                    txt.ForeColor = Color.White;
+                    if (isPassword) txt.UseSystemPasswordChar = true;
+                }
+            };
+
+            txt.Leave += (s, e) =>
+            {
+                if (string.IsNullOrWhiteSpace(txt.Text))
+                {
+                    txt.Text = placeholder;
+                    txt.ForeColor = Color.Gray;
+                    if (isPassword) txt.UseSystemPasswordChar = false;
+                }
+            };
+
+            pnlBg.Controls.Add(txt);
+            container.Controls.Add(pnlBg);
+            return txt;
+        }
+
+        // Método local para gerar hash SHA256 (mesma lógica do DatabaseHelper)
+        private string GerarHashSHA256(string input)
+        {
+            using (var sha256 = System.Security.Cryptography.SHA256.Create())
+            {
+                var bytes = sha256.ComputeHash(System.Text.Encoding.UTF8.GetBytes(input));
+                var sb = new System.Text.StringBuilder();
+                foreach (var b in bytes) sb.Append(b.ToString("x2"));
+                return sb.ToString();
+            }
+        }
+
+        private void BtnEntrar_Click(object sender, EventArgs e)
+        {
+            string email = (txtEmail.Text == "• Email") ? "" : txtEmail.Text.Trim();
+            string senha = (txtSenha.Text == "• Senha") ? "" : txtSenha.Text;
+
+            // Validação de campos vazios
+            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(senha))
+            {
+                MessageBox.Show("Preencha email e senha.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                // 1. Conexão direta ao PostgreSQL
+                using (var conn = new NpgsqlConnection(pgConnString))
+                {
+                    conn.Open();
+
+                    // 2. Consulta ajustada para o padrão minúsculo do PostgreSQL
+                    string sql = "SELECT senha FROM users WHERE email = @email";
+
+                    using (var cmd = new NpgsqlCommand(sql, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@email", email);
+                        object result = cmd.ExecuteScalar();
+
+                        if (result != null)
+                        {
+                            string dbSenha = result.ToString();
+
+                            // 3. Utiliza o gerador de hash local
+                            string hashInput = GerarHashSHA256(senha);
+
+                            // Valida se o hash gerado bate com o armazenado no banco de dados
+                            if (dbSenha == hashInput)
+                            {
+                                DadosCinema.FilmeSelecionado = "";
+                                Form1 home = new Form1();
+                                home.Show();
+                                this.Hide();
+                            }
+                            else
+                            {
+                                MessageBox.Show("Email ou senha inválidos.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show("Usuário não encontrado.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao conectar ao banco: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+    }
+}

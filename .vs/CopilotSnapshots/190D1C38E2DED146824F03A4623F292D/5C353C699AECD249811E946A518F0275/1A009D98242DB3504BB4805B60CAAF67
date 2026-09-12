@@ -1,0 +1,319 @@
+﻿using Npgsql;
+using System;
+using System.Drawing;
+using System.Security.Cryptography;
+using System.Text;
+using System.Windows.Forms;
+
+namespace CineSulApp
+{
+    public partial class FormCadastro : Form
+    {
+        private TextBox txtNome, txtCPF, txtEmail, txtTelefone, txtSenha, txtRepetirSenha;
+        private MaskedTextBox txtDataNasc;
+        private CheckBox chkTermos;
+
+        public FormCadastro()
+        {
+            ConfigurarTela();
+            ConstruirInterface();
+        }
+
+        private void ConfigurarTela()
+        {
+            this.Text = "Cadastro - Cíne Sul";
+            this.Size = new Size(1024, 900);
+            this.BackColor = Color.FromArgb(13, 16, 26);
+            this.StartPosition = FormStartPosition.CenterScreen;
+        }
+
+        private void ConstruirInterface()
+        {
+            this.Controls.Add(NavigationHelper.CreateHeader(this));
+
+            Panel central = new Panel
+            {
+                Size = new Size(600, 550),
+                Location = new Point((this.ClientSize.Width - 600) / 2, 80),
+                BackColor = Color.Transparent
+            };
+
+            Label lblTitulo = new Label
+            {
+                Text = "Crie a sua conta!",
+                ForeColor = Color.White,
+                Font = new Font("Segoe UI", 16, FontStyle.Bold),
+                TextAlign = ContentAlignment.MiddleCenter,
+                Size = new Size(600, 40),
+                Location = new Point(0, 10)
+            };
+
+            txtNome = CriarCampo("• Nome completo", 440, 70, 80, central);
+            txtDataNasc = CriarCampoData("• Data de nascimento", 210, 70, 130, central);
+            txtCPF = CriarCampo("• CPF", 215, 295, 130, central);
+            txtEmail = CriarCampo("• Email", 210, 70, 190, central);
+            txtTelefone = CriarCampo("• Telefone", 215, 295, 190, central);
+            txtSenha = CriarCampo("• Senha", 210, 70, 250, central, true);
+            txtRepetirSenha = CriarCampo("• Repetir senha", 215, 295, 250, central, true);
+
+            chkTermos = new CheckBox
+            {
+                Text = "Li e aceite os termos de condições e a política de privacidade",
+                ForeColor = Color.Silver,
+                Font = new Font("Segoe UI", 8.5f),
+                Location = new Point(70, 310),
+                AutoSize = true,
+                Cursor = Cursors.Hand
+            };
+
+            Button btnCriar = new Button
+            {
+                Text = "Criar conta",
+                Size = new Size(180, 40),
+                Location = new Point(210, 360),
+                BackColor = Color.FromArgb(24, 28, 38),
+                ForeColor = Color.White,
+                Font = new Font("Segoe UI", 9.5f, FontStyle.Bold),
+                FlatStyle = FlatStyle.Flat,
+                Cursor = Cursors.Hand
+            };
+            btnCriar.FlatAppearance.BorderColor = Color.FromArgb(63, 114, 252);
+            btnCriar.FlatAppearance.BorderSize = 2;
+            btnCriar.Click += BtnCriar_Click;
+
+            // String de conexão direta ao PostgreSQL (inline)
+            // Caso prefira usar DatabaseHelper, remova esta linha e mantenha o helper centralizado
+            // private readonly string pgConnString = "Host=localhost;Port=5432;Database=cinesuldb;Username=postgres;Password=root;";
+
+            central.Controls.AddRange(new Control[] { lblTitulo, chkTermos, btnCriar });
+            this.Controls.Add(central);
+        }
+
+        private MaskedTextBox CriarCampoData(string placeholder, int largura, int posX, int posY, Panel container)
+        {
+            Panel pnlBg = new Panel
+            {
+                Size = new Size(largura, 40),
+                Location = new Point(posX, posY),
+                BackColor = Color.FromArgb(38, 42, 50)
+            };
+
+            MaskedTextBox msk = new MaskedTextBox
+            {
+                Mask = "00/00/0000",
+                Text = placeholder,
+                ForeColor = Color.Gray,
+                Font = new Font("Segoe UI", 9),
+                Size = new Size(largura - 20, 22),
+                Location = new Point(10, 9),
+                BackColor = Color.FromArgb(38, 42, 50),
+                BorderStyle = BorderStyle.None,
+                PromptChar = '_'
+            };
+
+            msk.Enter += (s, e) =>
+            {
+                if (msk.ForeColor == Color.Gray)
+                {
+                    msk.Text = "";
+                    msk.ForeColor = Color.White;
+                }
+
+                // Força o cursor a ir sempre para o primeiro caractere (início) ao focar o campo
+                msk.BeginInvoke((Action)(() =>
+                {
+                    msk.SelectionStart = 0;
+                }));
+            };
+
+            msk.Leave += (s, e) =>
+            {
+                string valorLimpo = msk.Text.Replace("/", "").Replace("_", "").Replace(" ", "").Trim();
+                if (string.IsNullOrEmpty(valorLimpo))
+                {
+                    msk.Mask = "";
+                    msk.Text = placeholder;
+                    msk.ForeColor = Color.Gray;
+                    msk.Mask = "00/00/0000";
+                }
+            };
+
+            pnlBg.Controls.Add(msk);
+            container.Controls.Add(pnlBg);
+            return msk;
+        }
+
+        private TextBox CriarCampo(string placeholder, int largura, int posX, int posY, Panel container, bool isPassword = false)
+        {
+            Panel pnlBg = new Panel
+            {
+                Size = new Size(largura, 40),
+                Location = new Point(posX, posY),
+                BackColor = Color.FromArgb(38, 42, 50)
+            };
+
+            TextBox txt = new TextBox
+            {
+                Text = placeholder,
+                ForeColor = Color.Gray,
+                Font = new Font("Segoe UI", 9),
+                Size = new Size(largura - 20, 22),
+                Location = new Point(10, 9),
+                BackColor = Color.FromArgb(38, 42, 50),
+                BorderStyle = BorderStyle.None
+            };
+
+            txt.Enter += (s, e) =>
+            {
+                if (txt.Text == placeholder)
+                {
+                    txt.Text = "";
+                    txt.ForeColor = Color.White;
+                    if (isPassword) txt.UseSystemPasswordChar = true;
+                }
+            };
+
+            txt.Leave += (s, e) =>
+            {
+                if (string.IsNullOrWhiteSpace(txt.Text))
+                {
+                    txt.Text = placeholder;
+                    txt.ForeColor = Color.Gray;
+                    if (isPassword) txt.UseSystemPasswordChar = false;
+                }
+            };
+
+            pnlBg.Controls.Add(txt);
+            container.Controls.Add(pnlBg);
+            return txt;
+        }
+
+        // Método local para gerar hash SHA256 (usado ao criar usuário)
+        private string GerarHashSHA256(string input)
+        {
+            using (var sha256 = System.Security.Cryptography.SHA256.Create())
+            {
+                var bytes = sha256.ComputeHash(System.Text.Encoding.UTF8.GetBytes(input));
+                var sb = new System.Text.StringBuilder();
+                foreach (var b in bytes) sb.Append(b.ToString("x2"));
+                return sb.ToString();
+            }
+        }
+
+        private void BtnCriar_Click(object sender, EventArgs e)
+        {
+            string nome = ObterValor(txtNome, "• Nome completo");
+            string dataNascStr = ObterValor(txtDataNasc, "• Data de nascimento");
+            string cpf = ObterValor(txtCPF, "• CPF");
+            string email = ObterValor(txtEmail, "• Email");
+            string telefone = ObterValor(txtTelefone, "• Telefone");
+            string senha = ObterValor(txtSenha, "• Senha");
+            string repetirSenha = ObterValor(txtRepetirSenha, "• Repetir senha");
+
+            // 1. Validações de campos obrigatórios
+            if (string.IsNullOrEmpty(nome) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(senha))
+            {
+                MessageBox.Show("Por favor, preencha todos os campos obrigatórios.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (senha != repetirSenha)
+            {
+                MessageBox.Show("As senhas informadas não coincidem.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (!chkTermos.Checked)
+            {
+                MessageBox.Show("Por favor, aceite os termos e condições para continuar.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // 2. Validação da Data de Nascimento (Tratando o trecho truncado)
+            DateTime? dataNascimentoValida = null;
+            if (!string.IsNullOrEmpty(dataNascStr) && dataNascStr != "__/__/____")
+            {
+                if (DateTime.TryParseExact(dataNascStr, "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out DateTime dataConvertida))
+                {
+                    dataNascimentoValida = dataConvertida;
+                }
+                else
+                {
+                    MessageBox.Show("A data de nascimento informada é inválida.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+            }
+
+            try
+            {
+                // 3. Verifica se o usuário já possui cadastro usando conexão direta
+                string pgConnString = "Host=localhost;Port=5432;Database=cinesuldb;Username=postgres;Password=317rosa2018;";
+
+                using (var conn = new Npgsql.NpgsqlConnection(pgConnString))
+                {
+                    conn.Open();
+
+                    // Verifica existência
+                    using (var cmdCheck = new Npgsql.NpgsqlCommand("SELECT COUNT(*) FROM users WHERE email = @email", conn))
+                    {
+                        cmdCheck.Parameters.AddWithValue("@email", email);
+                        long count = Convert.ToInt64(cmdCheck.ExecuteScalar());
+                        if (count > 0)
+                        {
+                            MessageBox.Show("Este e-mail já está cadastrado em nosso sistema.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                        }
+                    }
+
+                    // Insere novo usuário
+                    string sql = "INSERT INTO users (email, senha) VALUES (@email, @senha)";
+                    using (var cmd = new Npgsql.NpgsqlCommand(sql, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@email", email);
+                        cmd.Parameters.AddWithValue("@senha", GerarHashSHA256(senha));
+
+                        int linhasAfetadas = cmd.ExecuteNonQuery();
+
+                        if (linhasAfetadas > 0)
+                        {
+                            MessageBox.Show("Conta criada com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                            // Redireciona o usuário de volta para a tela de Login
+                            FormLogin login = new FormLogin();
+                            login.Show();
+                            this.Close(); // Fecha o formulário atual de cadastro
+                        }
+                        else
+                        {
+                            MessageBox.Show("Não foi possível criar a conta. Tente novamente.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao conectar ao banco de dados: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        // 5. Método auxiliar para resolver placeholders de TextBox e MaskedTextBox
+        private string ObterValor(Control campo, string placeholder)
+        {
+            if (campo is MaskedTextBox msk)
+            {
+                // Remove máscaras literais para validar se o usuário digitou dados reais
+                string valorLimpo = msk.Text.Replace("/", "").Replace("_", "").Replace(" ", "").Trim();
+                if (string.IsNullOrEmpty(valorLimpo) || msk.Text == placeholder) return "";
+                return msk.Text.Trim(); // Retorna o texto formatado (ex: 12/12/2000)
+            }
+
+            if (campo is TextBox txt)
+            {
+                if (txt.Text == placeholder || string.IsNullOrWhiteSpace(txt.Text)) return "";
+                return txt.Text.Trim();
+            }
+
+            return "";
+        }
+    }
+}

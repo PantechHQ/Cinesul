@@ -1,0 +1,242 @@
+﻿using System;
+using System.Drawing;
+using System.Windows.Forms;
+
+namespace CineSulApp
+{
+    public static class NavigationHelper
+    {
+        public static Panel CriarHeader(Form currentForm)
+        {
+            return CreateHeader(currentForm);
+        }
+
+        public static Button CreateHomeButton(Form currentForm, Point location)
+        {
+            Button btnHome = new Button
+            {
+                Text = "Home",
+                Size = new Size(80, 30),
+                Location = location,
+                FlatStyle = FlatStyle.Flat,
+                ForeColor = Color.White,
+                BackColor = Color.Transparent,
+                Font = new Font("Segoe UI", 11, FontStyle.Bold),
+                Cursor = Cursors.Hand
+            };
+            btnHome.FlatAppearance.BorderSize = 0;
+            btnHome.Click += (s, e) =>
+            {
+                if (!(currentForm is Form1))
+                {
+                    Form1 telaHome = new Form1();
+                    telaHome.Show();
+                    currentForm.Hide();
+                }
+            };
+            return btnHome;
+        }
+
+        public static Button CreateFilmesButton(Form currentForm, Point location)
+        {
+            Button btnFilmes = new Button
+            {
+                Text = "Filmes",
+                Size = new Size(80, 30),
+                Location = location,
+                FlatStyle = FlatStyle.Flat,
+                ForeColor = Color.White,
+                BackColor = Color.Transparent,
+                Font = new Font("Segoe UI", 11, FontStyle.Bold),
+                Cursor = Cursors.Hand
+            };
+            btnFilmes.FlatAppearance.BorderSize = 0;
+            btnFilmes.Click += (s, e) =>
+            {
+                if (!(currentForm is Form9))
+                {
+                    Form9 telaFilmes = new Form9();
+                    telaFilmes.Show();
+                    currentForm.Hide();
+                }
+            };
+            return btnFilmes;
+        }
+
+        public static Button CreateFavoritosButton(Form currentForm, Point location)
+        {
+            Button btnFav = new Button
+            {
+                Text = "Favoritos",
+                Size = new Size(95, 30),
+                Location = location,
+                FlatStyle = FlatStyle.Flat,
+                ForeColor = Color.White,
+                BackColor = Color.Transparent,
+                Font = new Font("Segoe UI", 11, FontStyle.Bold),
+                Cursor = Cursors.Hand
+            };
+            btnFav.FlatAppearance.BorderSize = 0;
+            btnFav.Click += (s, e) =>
+            {
+                if (currentForm.GetType().Name != "FormFavoritos")
+                {
+                    FormFavoritos telaFav = new FormFavoritos();
+                    telaFav.Show();
+                    currentForm.Hide();
+                }
+            };
+            return btnFav;
+        }
+
+        public static Button CreateProfileButton(Form currentForm, Point location)
+        {
+            Button btnPerfil = new Button
+            {
+                Text = "👤",
+                Size = new Size(40, 40),
+                Location = location,
+                FlatStyle = FlatStyle.Flat,
+                ForeColor = Color.White,
+                BackColor = Color.Transparent,
+                Font = new Font("Segoe UI", 14),
+                Cursor = Cursors.Hand
+            };
+            btnPerfil.FlatAppearance.BorderSize = 0;
+            btnPerfil.Click += (s, e) =>
+            {
+                if (DadosCinema.IsLoggedIn)
+                {
+                    MessageBox.Show("Você já está logado!", "Status", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    FormLogin login = new FormLogin();
+                    login.Show();
+                    currentForm.Hide();
+                }
+            };
+            return btnPerfil;
+        }
+
+        // Botão de logout/deslogar separado para ficar visível apenas quando o usuário estiver logado
+        public static Button CreateLogoutButton(Form currentForm, Point location)
+        {
+            Button btnLogout = new Button
+            {
+                Text = "Sair",
+                Size = new Size(70, 30),
+                Location = location,
+                FlatStyle = FlatStyle.Flat,
+                ForeColor = Color.White,
+                BackColor = Color.FromArgb(200, 40, 40),
+                Font = new Font("Segoe UI", 9, FontStyle.Bold),
+                Cursor = Cursors.Hand,
+                Visible = DadosCinema.IsLoggedIn
+            };
+            btnLogout.FlatAppearance.BorderSize = 0;
+            btnLogout.Click += (s, e) =>
+            {
+                if (!DadosCinema.IsLoggedIn)
+                {
+                    // Se não estiver logado, abre a tela de login
+                    FormLogin login = new FormLogin();
+                    login.Show();
+                    currentForm.Hide();
+                    return;
+                }
+
+                // Desloga o usuário
+                DadosCinema.IsLoggedIn = false;
+                DadosCinema.LoggedUserEmail = string.Empty;
+                MessageBox.Show("Você foi deslogado.", "Sessão encerrada", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                // Retorna para a home
+                if (!(currentForm is Form1))
+                {
+                    Form1 telaHome = new Form1();
+                    telaHome.Show();
+                }
+                currentForm.Hide();
+            };
+            return btnLogout;
+        }
+
+        public static Panel CreateHeader(Form currentForm)
+        {
+            // Tom de azul idêntico ao da referência da segunda imagem
+            Panel header = new Panel
+            {
+                Dock = DockStyle.Top,
+                Height = 65,
+                BackColor = Color.FromArgb(28, 79, 186)
+            };
+
+            // Logo CÍNE SUL em duas linhas conforme o design
+            Label lblLogo = new Label
+            {
+                Text = "CÍNE\nSUL",
+                ForeColor = Color.White,
+                Font = new Font("Segoe UI", 11, FontStyle.Bold),
+                AutoSize = true
+            };
+
+            // Menu Central
+            FlowLayoutPanel navPanel = new FlowLayoutPanel
+            {
+                FlowDirection = FlowDirection.LeftToRight,
+                WrapContents = false,
+                AutoSize = true,
+                BackColor = Color.Transparent
+            };
+
+            Button btnFilmes = CreateFilmesButton(currentForm, new Point(0, 0));
+            Label sep1 = new Label { Text = "|", ForeColor = Color.White, Font = new Font("Segoe UI", 11, FontStyle.Bold), AutoSize = true };
+            Button btnHome = CreateHomeButton(currentForm, new Point(0, 0));
+            Label sep2 = new Label { Text = "|", ForeColor = Color.White, Font = new Font("Segoe UI", 11, FontStyle.Bold), AutoSize = true };
+            Button btnFavoritos = CreateFavoritosButton(currentForm, new Point(0, 0));
+
+            // Ajuste dos espaçamentos internos para alinhar perfeitamente o "Filmes | Home | Favoritos"
+            btnFilmes.Margin = new Padding(0, 2, 0, 0);
+            btnHome.Margin = new Padding(0, 2, 0, 0);
+            btnFavoritos.Margin = new Padding(0, 0, 0, 0);
+            sep1.Margin = new Padding(4, 6, 4, 0);
+            sep2.Margin = new Padding(4, 6, 4, 0);
+
+            navPanel.Controls.AddRange(new Control[] { btnFilmes, sep1, btnHome, sep2, btnFavoritos });
+
+            // Botão de Perfil (Canto direito)
+            Button btnPerfil = CreateProfileButton(currentForm, new Point(0, 0));
+
+            header.Controls.Add(lblLogo);
+            header.Controls.Add(navPanel);
+            header.Controls.Add(btnPerfil);
+
+            // Método de reposicionamento responsivo
+            Action reposition = () =>
+            {
+                try
+                {
+                    lblLogo.Left = 20;
+                    lblLogo.Top = Math.Max(0, (header.ClientSize.Height - lblLogo.Height) / 2);
+
+                    int centered = (header.ClientSize.Width - navPanel.Width) / 2;
+                    navPanel.Left = Math.Max(lblLogo.Right + 20, centered);
+                    navPanel.Top = Math.Max(15, (header.ClientSize.Height - navPanel.Height) / 2);
+
+                    btnPerfil.Left = header.ClientSize.Width - btnPerfil.Width - 15;
+                    btnPerfil.Top = Math.Max(0, (header.ClientSize.Height - btnPerfil.Height) / 2);
+                }
+                catch { }
+            };
+
+            header.SizeChanged += (s, e) => reposition();
+            currentForm.Resize += (s, e) => reposition();
+
+            reposition();
+            header.BringToFront();
+
+            return header;
+        }
+    }
+}

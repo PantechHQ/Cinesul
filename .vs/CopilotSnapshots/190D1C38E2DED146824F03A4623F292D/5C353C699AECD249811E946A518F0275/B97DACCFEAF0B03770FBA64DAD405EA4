@@ -1,0 +1,90 @@
+﻿using System;
+using System.Drawing;
+using System.Windows.Forms;
+
+namespace CineSulApp
+{
+    public class FormDetalheFilme : Form
+    {
+        private readonly string titulo;
+        private readonly decimal preco;
+
+        public FormDetalheFilme(string tituloFilme, decimal precoFilme)
+        {
+            titulo = tituloFilme;
+            preco = precoFilme;
+            ConfigurarTela();
+            ConstruirInterface();
+        }
+
+        private void ConfigurarTela()
+        {
+            this.Text = $"Detalhes - {titulo}";
+            this.Size = new Size(1024, 900);
+            this.StartPosition = FormStartPosition.CenterScreen;
+            this.BackColor = Color.FromArgb(10, 15, 28);
+        }
+
+        private void ConstruirInterface()
+        {
+            // Header padrão
+            this.Controls.Add(NavigationHelper.CreateHeader(this));
+
+            // Main
+            Panel main = new Panel { Dock = DockStyle.Fill, Padding = new Padding(30), BackColor = Color.Transparent };
+            this.Controls.Add(main);
+            main.BringToFront();
+
+            // Coluna esquerda: poster e info rápida
+            Panel left = new Panel { Size = new Size(320, 520), Location = new Point(30, 30), BackColor = Color.FromArgb(30, 30, 36) };
+            Label lblPoster = new Label { Text = "[ PÔSTER ]", ForeColor = Color.White, Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleCenter, Font = new Font("Segoe UI", 10) };
+            left.Controls.Add(lblPoster);
+            main.Controls.Add(left);
+
+            // Coluna direita: detalhes e compra
+            Panel right = new Panel { Location = new Point(380, 30), Size = new Size(600, 520), BackColor = Color.Transparent };
+
+            Label lblTitulo = new Label { Text = titulo, ForeColor = Color.White, Font = new Font("Segoe UI", 18, FontStyle.Bold), Location = new Point(10, 8), AutoSize = true };
+            Label lblPreco = new Label { Text = $"R$ {preco:N2}", ForeColor = Color.LimeGreen, Font = new Font("Segoe UI", 14, FontStyle.Bold), Location = new Point(10, 48), AutoSize = true };
+
+            Label lblSinopse = new Label { Text = "Descrição: Gru conhece seu irmão gêmeo Dru... (exemplo)", ForeColor = Color.Silver, Font = new Font("Segoe UI", 10), Location = new Point(10, 90), Size = new Size(560, 120) };
+
+            // Informações adicionais
+            Label lblDuracao = new Label { Text = "Duração: 1h 30min", ForeColor = Color.Gray, Font = new Font("Segoe UI", 9), Location = new Point(10, 220), AutoSize = true };
+
+            // Opções de pagamento (reaproveita fluxo para Form6)
+            Button btnCartao = new Button { Text = "Cartão de crédito", Size = new Size(520, 48), Location = new Point(10, 260), BackColor = Color.FromArgb(28, 28, 36), ForeColor = Color.White, FlatStyle = FlatStyle.Flat, Cursor = Cursors.Hand };
+            btnCartao.FlatAppearance.BorderSize = 0;
+            btnCartao.Click += (s, e) => IrParaPagamento();
+
+            Button btnDebito = new Button { Text = "Cartão de débito", Size = new Size(520, 48), Location = new Point(10, 320), BackColor = Color.FromArgb(28, 28, 36), ForeColor = Color.White, FlatStyle = FlatStyle.Flat, Cursor = Cursors.Hand };
+            btnDebito.FlatAppearance.BorderSize = 0;
+            btnDebito.Click += (s, e) => IrParaPagamento();
+
+            Button btnPix = new Button { Text = "Pix", Size = new Size(520, 48), Location = new Point(10, 380), BackColor = Color.FromArgb(28, 28, 36), ForeColor = Color.White, FlatStyle = FlatStyle.Flat, Cursor = Cursors.Hand };
+            btnPix.FlatAppearance.BorderSize = 0;
+            btnPix.Click += (s, e) => IrParaPagamento();
+
+            right.Controls.AddRange(new Control[] { lblTitulo, lblPreco, lblSinopse, lblDuracao, btnCartao, btnDebito, btnPix });
+            main.Controls.Add(right);
+        }
+
+        private void IrParaPagamento()
+        {
+            // Se não estiver logado, direciona para login
+            if (!DadosCinema.IsLoggedIn)
+            {
+                FormLogin login = new FormLogin();
+                login.Show();
+                this.Hide();
+                return;
+            }
+
+            // Seta o filme escolhido e abre o fluxo de pagamento existente (Form6)
+            DadosCinema.FilmeSelecionado = titulo;
+            Form6 telaPagamento = new Form6();
+            telaPagamento.Show();
+            this.Hide();
+        }
+    }
+}

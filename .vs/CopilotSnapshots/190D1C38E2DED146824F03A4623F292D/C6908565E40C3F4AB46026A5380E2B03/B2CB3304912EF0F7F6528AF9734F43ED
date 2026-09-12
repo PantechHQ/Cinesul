@@ -1,0 +1,95 @@
+﻿using System;
+using System.Drawing;
+using System.Windows.Forms;
+
+namespace CineSulApp
+{
+    public partial class Form8 : Form
+    {
+        public Form8()
+        {
+            InitializeComponent();
+            {
+                this.FormBorderStyle = FormBorderStyle.None; // Remove as bordas e a barra de título
+                this.WindowState = FormWindowState.Maximized; // Ocupa a tela inteira, cobrindo a barra de tarefas
+
+            }
+            ConfigurarTela();
+            ConstruirInterface();
+        }
+
+        private void ConfigurarTela()
+        {
+            this.Text = "Pedido Concluído - Cíne Sul";
+            this.Size = new Size(1024, 900);
+            this.BackColor = Color.FromArgb(10, 15, 28);
+            this.StartPosition = FormStartPosition.CenterScreen;
+        }
+
+        private void ConstruirInterface()
+        {
+            // HEADER padronizado
+            this.Controls.Add(NavigationHelper.CreateHeader(this));
+
+            // SIDEBAR LATERAL DINÂMICA
+            Panel sidebar = CriarSidebarLateral();
+            this.Controls.Add(sidebar);
+
+            // TEXTO DE SUCESSO
+            Label lblSucesso = new Label { Text = "Seu pedido foi feito! Aproveite o filme", ForeColor = Color.White, Font = new Font("Segoe UI", 18, FontStyle.Bold), Location = new Point(390, 110), AutoSize = true };
+            this.Controls.Add(lblSucesso);
+
+            // --- DESENHO DO INGRESSO ESTILIZADO ---
+            Panel ticket = new Panel { Size = new Size(540, 240), Location = new Point(350, 180), BackColor = Color.FromArgb(245, 247, 250) };
+            this.Controls.Add(ticket);
+
+            Label lblInfoTicket = new Label
+            {
+                Text = $"Filme: {DadosCinema.FilmeSelecionado}\n" +
+                       $"Cinema: {DadosCinema.CinemaSelecionado}\n\n" +
+                       $"-------------------------------------------\n" +
+                       $"Horas                    Dias\n" +
+                       $"{DadosCinema.HorarioSelecionado}                    25/06\n\n" +
+                       $"Assentos Escolhidos: Sorteados",
+                ForeColor = Color.Black,
+                Font = new Font("Consolas", 11, FontStyle.Bold),
+                Location = new Point(25, 25),
+                Size = new Size(360, 190)
+            };
+            ticket.Controls.Add(lblInfoTicket);
+
+            // Detalhe redondo do Canhoto do Ingresso (Círculo Preto do ticket)
+            Panel circuloCanhoto = new Panel { Size = new Size(50, 50), Location = new Point(440, 95), BackColor = Color.Black };
+            // Força formato redondo
+            System.Drawing.Drawing2D.GraphicsPath path = new System.Drawing.Drawing2D.GraphicsPath();
+            path.AddEllipse(0, 0, 50, 50);
+            circuloCanhoto.Region = new Region(path);
+            ticket.Controls.Add(circuloCanhoto);
+
+            // Botão Concluir e Reiniciar
+            Button btnVoltarInicio = new Button { Text = "Comprar mais ingressos", Size = new Size(240, 45), Location = new Point(500, 500), BackColor = Color.FromArgb(13, 71, 161), ForeColor = Color.White, FlatStyle = FlatStyle.Flat, Font = new Font("Segoe UI", 11, FontStyle.Bold) };
+            btnVoltarInicio.FlatAppearance.BorderSize = 0;
+            btnVoltarInicio.Click += (s, e) => {
+                // Reseta carrinho global
+                DadosCinema.QtdInteira = 0;
+                DadosCinema.QtdMeia = 0;
+                DadosCinema.TotalSnacks = 0.00m;
+                DadosCinema.SnackQuantities.Clear();
+                DadosCinema.QtdAssentosSelecionados = 0;   
+
+                Form1 home = new Form1();
+                home.Show();
+                this.Close();
+            };
+            this.Controls.Add(btnVoltarInicio);
+        }
+
+        private Panel CriarSidebarLateral()
+        {
+            Panel sidebar = new Panel { Dock = DockStyle.Left, Width = 240, BackColor = Color.FromArgb(8, 11, 20), Padding = new Padding(20) };
+            Label lblFilme = new Label { Text = DadosCinema.FilmeSelecionado, ForeColor = Color.White, Font = new Font("Segoe UI", 12, FontStyle.Bold), Location = new Point(20, 30), Size = new Size(200, 50) };
+            sidebar.Controls.Add(lblFilme);
+            return sidebar;
+        }
+    }
+}

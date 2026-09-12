@@ -1,0 +1,394 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{357FDA3F-C20C-4125-80D9-A8231A983EED}|CineSul\\CineSul.csproj|D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\cinesul\\formcadastrocs.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{357FDA3F-C20C-4125-80D9-A8231A983EED}|CineSul\\CineSul.csproj|solutionrelative:cinesul\\formcadastrocs.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{357FDA3F-C20C-4125-80D9-A8231A983EED}|CineSul\\CineSul.csproj|D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\cinesul\\dadoscinema.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{357FDA3F-C20C-4125-80D9-A8231A983EED}|CineSul\\CineSul.csproj|solutionrelative:cinesul\\dadoscinema.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{357FDA3F-C20C-4125-80D9-A8231A983EED}|CineSul\\CineSul.csproj|D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\cinesul\\componentescinema.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{357FDA3F-C20C-4125-80D9-A8231A983EED}|CineSul\\CineSul.csproj|solutionrelative:cinesul\\componentescinema.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{357FDA3F-C20C-4125-80D9-A8231A983EED}|CineSul\\CineSul.csproj|D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\cinesul\\posterhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{357FDA3F-C20C-4125-80D9-A8231A983EED}|CineSul\\CineSul.csproj|solutionrelative:cinesul\\posterhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{357FDA3F-C20C-4125-80D9-A8231A983EED}|CineSul\\CineSul.csproj|D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\cinesul\\navigationhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{357FDA3F-C20C-4125-80D9-A8231A983EED}|CineSul\\CineSul.csproj|solutionrelative:cinesul\\navigationhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{357FDA3F-C20C-4125-80D9-A8231A983EED}|CineSul\\CineSul.csproj|D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\cinesul\\formpolitica.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{357FDA3F-C20C-4125-80D9-A8231A983EED}|CineSul\\CineSul.csproj|solutionrelative:cinesul\\formpolitica.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{357FDA3F-C20C-4125-80D9-A8231A983EED}|CineSul\\CineSul.csproj|D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\cinesul\\formlogin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{357FDA3F-C20C-4125-80D9-A8231A983EED}|CineSul\\CineSul.csproj|solutionrelative:cinesul\\formlogin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{357FDA3F-C20C-4125-80D9-A8231A983EED}|CineSul\\CineSul.csproj|D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\cinesul\\formesqueceusenha.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{357FDA3F-C20C-4125-80D9-A8231A983EED}|CineSul\\CineSul.csproj|solutionrelative:cinesul\\formesqueceusenha.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{357FDA3F-C20C-4125-80D9-A8231A983EED}|CineSul\\CineSul.csproj|D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\cinesul\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{357FDA3F-C20C-4125-80D9-A8231A983EED}|CineSul\\CineSul.csproj|solutionrelative:cinesul\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{357FDA3F-C20C-4125-80D9-A8231A983EED}|CineSul\\CineSul.csproj|D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\cinesul\\formfavoritos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{357FDA3F-C20C-4125-80D9-A8231A983EED}|CineSul\\CineSul.csproj|solutionrelative:cinesul\\formfavoritos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{357FDA3F-C20C-4125-80D9-A8231A983EED}|CineSul\\CineSul.csproj|D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\cinesul\\formdetalhefilme.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{357FDA3F-C20C-4125-80D9-A8231A983EED}|CineSul\\CineSul.csproj|solutionrelative:cinesul\\formdetalhefilme.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{357FDA3F-C20C-4125-80D9-A8231A983EED}|CineSul\\CineSul.csproj|D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\cinesul\\formtermos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{357FDA3F-C20C-4125-80D9-A8231A983EED}|CineSul\\CineSul.csproj|solutionrelative:cinesul\\formtermos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{357FDA3F-C20C-4125-80D9-A8231A983EED}|CineSul\\CineSul.csproj|D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\cinesul\\formcomentarioscs.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{357FDA3F-C20C-4125-80D9-A8231A983EED}|CineSul\\CineSul.csproj|solutionrelative:cinesul\\formcomentarioscs.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{357FDA3F-C20C-4125-80D9-A8231A983EED}|CineSul\\CineSul.csproj|d:\\3k\\linguagem de programa\u00E7\u00E3o\\cinesul\\cinesul\\form9.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{357FDA3F-C20C-4125-80D9-A8231A983EED}|CineSul\\CineSul.csproj|solutionrelative:cinesul\\form9.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{357FDA3F-C20C-4125-80D9-A8231A983EED}|CineSul\\CineSul.csproj|D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\cinesul\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{357FDA3F-C20C-4125-80D9-A8231A983EED}|CineSul\\CineSul.csproj|solutionrelative:cinesul\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{357FDA3F-C20C-4125-80D9-A8231A983EED}|CineSul\\CineSul.csproj|D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\cinesul\\form2.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{357FDA3F-C20C-4125-80D9-A8231A983EED}|CineSul\\CineSul.csproj|solutionrelative:cinesul\\form2.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{357FDA3F-C20C-4125-80D9-A8231A983EED}|CineSul\\CineSul.csproj|D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\cinesul\\form3.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{357FDA3F-C20C-4125-80D9-A8231A983EED}|CineSul\\CineSul.csproj|solutionrelative:cinesul\\form3.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{357FDA3F-C20C-4125-80D9-A8231A983EED}|CineSul\\CineSul.csproj|D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\cinesul\\form4.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{357FDA3F-C20C-4125-80D9-A8231A983EED}|CineSul\\CineSul.csproj|solutionrelative:cinesul\\form4.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{357FDA3F-C20C-4125-80D9-A8231A983EED}|CineSul\\CineSul.csproj|D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\cinesul\\form5.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{357FDA3F-C20C-4125-80D9-A8231A983EED}|CineSul\\CineSul.csproj|solutionrelative:cinesul\\form5.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{357FDA3F-C20C-4125-80D9-A8231A983EED}|CineSul\\CineSul.csproj|D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\cinesul\\form6.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{357FDA3F-C20C-4125-80D9-A8231A983EED}|CineSul\\CineSul.csproj|solutionrelative:cinesul\\form6.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{357FDA3F-C20C-4125-80D9-A8231A983EED}|CineSul\\CineSul.csproj|D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\cinesul\\form7.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{357FDA3F-C20C-4125-80D9-A8231A983EED}|CineSul\\CineSul.csproj|solutionrelative:cinesul\\form7.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{357FDA3F-C20C-4125-80D9-A8231A983EED}|CineSul\\CineSul.csproj|D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\cinesul\\form8.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{357FDA3F-C20C-4125-80D9-A8231A983EED}|CineSul\\CineSul.csproj|solutionrelative:cinesul\\form8.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 6,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "DadosCinema.cs",
+              "DocumentMoniker": "D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\CineSul\\DadosCinema.cs",
+              "RelativeDocumentMoniker": "CineSul\\DadosCinema.cs",
+              "ToolTip": "D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\CineSul\\DadosCinema.cs",
+              "RelativeToolTip": "CineSul\\DadosCinema.cs",
+              "ViewState": "AgIAABcAAAAAAAAAAAAAwC0AAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-13T22:24:38.074Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ComponentesCinema.cs",
+              "DocumentMoniker": "D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\CineSul\\ComponentesCinema.cs",
+              "RelativeDocumentMoniker": "CineSul\\ComponentesCinema.cs",
+              "ToolTip": "D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\CineSul\\ComponentesCinema.cs",
+              "RelativeToolTip": "CineSul\\ComponentesCinema.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAFQAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-13T22:24:38.06Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Posterhelper.cs",
+              "DocumentMoniker": "D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\CineSul\\Posterhelper.cs",
+              "RelativeDocumentMoniker": "CineSul\\Posterhelper.cs",
+              "ToolTip": "D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\CineSul\\Posterhelper.cs",
+              "RelativeToolTip": "CineSul\\Posterhelper.cs",
+              "ViewState": "AgIAACQAAAAAAAAAAAAAAE0AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-27T00:18:30.369Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "NavigationHelper.cs",
+              "DocumentMoniker": "D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\CineSul\\NavigationHelper.cs",
+              "RelativeDocumentMoniker": "CineSul\\NavigationHelper.cs",
+              "ToolTip": "D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\CineSul\\NavigationHelper.cs",
+              "RelativeToolTip": "CineSul\\NavigationHelper.cs",
+              "ViewState": "AgIAAPkAAAAAAAAAAAAQwCMBAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-13T22:24:38.057Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "FormPolitica.cs",
+              "DocumentMoniker": "D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\CineSul\\FormPolitica.cs",
+              "RelativeDocumentMoniker": "CineSul\\FormPolitica.cs",
+              "ToolTip": "D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\CineSul\\FormPolitica.cs",
+              "RelativeToolTip": "CineSul\\FormPolitica.cs",
+              "ViewState": "AgIAAD0AAAAAAAAAAAAAAEcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-15T18:22:58.655Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "FormLogin.cs",
+              "DocumentMoniker": "D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\CineSul\\FormLogin.cs",
+              "RelativeDocumentMoniker": "CineSul\\FormLogin.cs",
+              "ToolTip": "D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\CineSul\\FormLogin.cs",
+              "RelativeToolTip": "CineSul\\FormLogin.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAB+AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-13T22:39:25.843Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "FormCadastrocs.cs",
+              "DocumentMoniker": "D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\CineSul\\FormCadastrocs.cs",
+              "RelativeDocumentMoniker": "CineSul\\FormCadastrocs.cs",
+              "ToolTip": "D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\CineSul\\FormCadastrocs.cs",
+              "RelativeToolTip": "CineSul\\FormCadastrocs.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-13T22:40:06.194Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "FormEsqueceuSenha.cs",
+              "DocumentMoniker": "D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\CineSul\\FormEsqueceuSenha.cs",
+              "RelativeDocumentMoniker": "CineSul\\FormEsqueceuSenha.cs",
+              "ToolTip": "D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\CineSul\\FormEsqueceuSenha.cs",
+              "RelativeToolTip": "CineSul\\FormEsqueceuSenha.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB4AAAB+AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-13T22:37:47.124Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\CineSul\\Program.cs",
+              "RelativeDocumentMoniker": "CineSul\\Program.cs",
+              "ToolTip": "D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\CineSul\\Program.cs",
+              "RelativeToolTip": "CineSul\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-13T22:24:38.056Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "FormFavoritos.cs",
+              "DocumentMoniker": "D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\CineSul\\FormFavoritos.cs",
+              "RelativeDocumentMoniker": "CineSul\\FormFavoritos.cs",
+              "ToolTip": "D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\CineSul\\FormFavoritos.cs",
+              "RelativeToolTip": "CineSul\\FormFavoritos.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAABzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-13T22:33:30.345Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "FormDetalheFilme.cs",
+              "DocumentMoniker": "D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\CineSul\\FormDetalheFilme.cs",
+              "RelativeDocumentMoniker": "CineSul\\FormDetalheFilme.cs",
+              "ToolTip": "D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\CineSul\\FormDetalheFilme.cs",
+              "RelativeToolTip": "CineSul\\FormDetalheFilme.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAF0AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-13T22:36:16.715Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "FormTermos.cs",
+              "DocumentMoniker": "D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\CineSul\\FormTermos.cs",
+              "RelativeDocumentMoniker": "CineSul\\FormTermos.cs",
+              "ToolTip": "D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\CineSul\\FormTermos.cs",
+              "RelativeToolTip": "CineSul\\FormTermos.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEYAAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-15T18:21:25.336Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "FormComentarioscs.cs",
+              "DocumentMoniker": "D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\CineSul\\FormComentarioscs.cs",
+              "RelativeDocumentMoniker": "CineSul\\FormComentarioscs.cs",
+              "ToolTip": "D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\CineSul\\FormComentarioscs.cs",
+              "RelativeToolTip": "CineSul\\FormComentarioscs.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-13T22:30:22.137Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "Form9.cs",
+              "DocumentMoniker": "D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\CineSul\\Form9.cs",
+              "RelativeDocumentMoniker": "CineSul\\Form9.cs",
+              "ToolTip": "D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\CineSul\\Form9.cs",
+              "RelativeToolTip": "CineSul\\Form9.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-13T22:27:50.56Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "Form8.cs",
+              "DocumentMoniker": "D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\CineSul\\Form8.cs",
+              "RelativeDocumentMoniker": "CineSul\\Form8.cs",
+              "ToolTip": "D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\CineSul\\Form8.cs",
+              "RelativeToolTip": "CineSul\\Form8.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAGwAAAAOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-13T22:27:24.008Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "Form7.cs",
+              "DocumentMoniker": "D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\CineSul\\Form7.cs",
+              "RelativeDocumentMoniker": "CineSul\\Form7.cs",
+              "ToolTip": "D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\CineSul\\Form7.cs",
+              "RelativeToolTip": "CineSul\\Form7.cs",
+              "ViewState": "AgIAANcAAAAAAAAAAAAAwAkAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-13T22:26:38.256Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "Form6.cs",
+              "DocumentMoniker": "D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\CineSul\\Form6.cs",
+              "RelativeDocumentMoniker": "CineSul\\Form6.cs",
+              "ToolTip": "D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\CineSul\\Form6.cs",
+              "RelativeToolTip": "CineSul\\Form6.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAEAAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-13T22:24:37.796Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "Form5.cs",
+              "DocumentMoniker": "D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\CineSul\\Form5.cs",
+              "RelativeDocumentMoniker": "CineSul\\Form5.cs",
+              "ToolTip": "D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\CineSul\\Form5.cs",
+              "RelativeToolTip": "CineSul\\Form5.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAALUAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-13T22:24:38.043Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "Form4.cs",
+              "DocumentMoniker": "D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\CineSul\\Form4.cs",
+              "RelativeDocumentMoniker": "CineSul\\Form4.cs",
+              "ToolTip": "D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\CineSul\\Form4.cs",
+              "RelativeToolTip": "CineSul\\Form4.cs",
+              "ViewState": "AgIAAJYAAAAAAAAAAAAUwMAAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-13T22:24:38.059Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "Form3.cs",
+              "DocumentMoniker": "D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\CineSul\\Form3.cs",
+              "RelativeDocumentMoniker": "CineSul\\Form3.cs",
+              "ToolTip": "D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\CineSul\\Form3.cs",
+              "RelativeToolTip": "CineSul\\Form3.cs",
+              "ViewState": "AgIAAM0AAAAAAAAAAAAUwPcAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-13T22:24:38.062Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "Form2.cs",
+              "DocumentMoniker": "D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\CineSul\\Form2.cs",
+              "RelativeDocumentMoniker": "CineSul\\Form2.cs",
+              "ToolTip": "D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\CineSul\\Form2.cs",
+              "RelativeToolTip": "CineSul\\Form2.cs",
+              "ViewState": "AgIAAHwAAAAAAAAAAAAUwKYAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-13T22:24:38.076Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "Form1.cs",
+              "DocumentMoniker": "D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\CineSul\\Form1.cs",
+              "RelativeDocumentMoniker": "CineSul\\Form1.cs",
+              "ToolTip": "D:\\3K\\Linguagem de Programa\u00E7\u00E3o\\CineSul\\CineSul\\Form1.cs",
+              "RelativeToolTip": "CineSul\\Form1.cs",
+              "ViewState": "AgIAAGEAAAAAAAAAAADwv2gAAABUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-13T22:24:38.078Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

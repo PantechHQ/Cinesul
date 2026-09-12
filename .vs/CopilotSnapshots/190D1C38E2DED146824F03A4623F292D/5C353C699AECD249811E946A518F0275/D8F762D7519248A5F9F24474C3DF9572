@@ -1,0 +1,158 @@
+﻿using System;
+using System.Drawing;
+using System.IO;
+using System.Windows.Forms;
+
+namespace CineSulApp
+{
+    public partial class Form1 : Form
+    {
+        public Form1()
+        {
+            InitializeComponent();
+            {
+                this.FormBorderStyle = FormBorderStyle.None; // Remove as bordas e a barra de título
+                this.WindowState = FormWindowState.Maximized; // Ocupa a tela inteira, cobrindo a barra de tarefas
+
+            }
+            ConfigurarTela();
+            ConstruirInterface();
+        }
+
+
+        private void ConfigurarTela()
+        {
+            this.Text = "Cíne Sul - Home";
+            this.Size = new Size(1024, 900);
+            this.BackColor = Color.FromArgb(18, 18, 24);
+            this.StartPosition = FormStartPosition.CenterScreen;
+        }
+
+        private void ConstruirInterface()
+        {
+            // HEADER padronizado com navegação
+            this.Controls.Add(NavigationHelper.CreateHeader(this));
+
+            // Container com Scroll
+            FlowLayoutPanel container = new FlowLayoutPanel
+            {
+                Dock = DockStyle.Fill,
+                AutoScroll = true,
+                FlowDirection = FlowDirection.TopDown,
+                WrapContents = false,
+                Padding = new Padding(30, 20, 30, 20),
+                BackColor = Color.FromArgb(18, 18, 24)
+            };
+            this.Controls.Add(container);
+            container.BringToFront();
+
+            // BANNER PRINCIPAL (Destaque para o filme clássico)
+            Panel panelBanner = new Panel { Size = new Size(930, 280), Margin = new Padding(0, 0, 0, 25), BackColor = Color.FromArgb(30, 30, 40) };
+            Label lblBannerTitle = new Label { Text = "O AUTO DA COMPADECIDA\nDESTAQUE DO CINEMA NACIONAL", ForeColor = Color.Yellow, Font = new Font("Segoe UI", 20, FontStyle.Bold), Location = new Point(50, 80), AutoSize = true, BackColor = Color.Transparent };
+            Button btnComprarBanner = new Button { Text = "VER HORÁRIOS ▷", ForeColor = Color.Black, BackColor = Color.White, FlatStyle = FlatStyle.Flat, Font = new Font("Segoe UI", 10, FontStyle.Bold), Size = new Size(200, 40), Location = new Point(50, 180), Cursor = Cursors.Hand };
+            btnComprarBanner.FlatAppearance.BorderSize = 0;
+
+            btnComprarBanner.Click += (s, e) => {
+                DadosCinema.FilmeSelecionado = "O Auto da Compadecida";
+                Form2 telaHorarios = new Form2();
+                telaHorarios.Show();
+                this.Hide();
+            };
+
+            panelBanner.Controls.AddRange(new Control[] { lblBannerTitle, btnComprarBanner });
+            container.Controls.Add(panelBanner);
+
+            // --- SEÇÃO: EM CARTAZ ---
+            Label lblEmCartaz = new Label { Text = "Em Cartaz", ForeColor = Color.White, Font = new Font("Segoe UI", 16, FontStyle.Bold), Margin = new Padding(0, 10, 0, 10), AutoSize = true };
+            container.Controls.Add(lblEmCartaz);
+
+            FlowLayoutPanel flowEmCartaz = new FlowLayoutPanel { Size = new Size(940, 230), FlowDirection = FlowDirection.LeftToRight, WrapContents = false, AutoScroll = true };
+
+            // Adiciona os filmes
+            flowEmCartaz.Controls.Add(CriarCardFilme("O Auto da Compadecida", "★ 8.6", "Comédia • Drama"));
+            flowEmCartaz.Controls.Add(CriarCardFilme("Central do Brasil", "★ 8.0", "Drama • Nacional"));
+            flowEmCartaz.Controls.Add(CriarCardFilme("Hoje Eu Quero Voltar Sozinho", "★ 7.9", "Romance • Drama"));
+            flowEmCartaz.Controls.Add(CriarCardFilme("Deus e o Diabo na Terra do Sol", "★ 9.0", "Drama • Clássico"));
+
+            container.Controls.Add(flowEmCartaz);
+
+            // --- SEÇÃO: EM BREVE / DEMAIS EXIBIÇÕES ---
+            Label lblEmBreve = new Label { Text = "Em Breve / Outras Sessões", ForeColor = Color.White, Font = new Font("Segoe UI", 16, FontStyle.Bold), Margin = new Padding(0, 20, 0, 10), AutoSize = true };
+            container.Controls.Add(lblEmBreve);
+
+            FlowLayoutPanel flowEmBreve = new FlowLayoutPanel { Size = new Size(940, 230), FlowDirection = FlowDirection.LeftToRight, WrapContents = false, AutoScroll = true };
+
+            // Adiciona os filmes
+            flowEmBreve.Controls.Add(CriarCardFilme("Turma da Mônica em Uma Aventura no Tempo", "★ 7.3", "Animação • Infantil"));
+            flowEmBreve.Controls.Add(CriarCardFilme("Internet - O Filme", "★ 3.1", "Comédia • Nacional"));
+            flowEmBreve.Controls.Add(CriarCardFilme("Xuxinha e Guto Contra os Monstros do Espaço", "★ 2.9", "Animação • Infantil"));
+            flowEmBreve.Controls.Add(CriarCardFilme("Ratatoing", "★ 1.9", "Animação • Infantil"));
+            flowEmBreve.Controls.Add(CriarCardFilme("Barquinhos", "★ 1.2", "Animação • Infantil"));
+
+            container.Controls.Add(flowEmBreve);
+        }
+
+        private Panel CriarCardFilme(string titulo, string nota, string info)
+        {
+            Panel card = new Panel { Size = new Size(200, 210), Margin = new Padding(0, 0, 20, 0), BackColor = Color.FromArgb(24, 24, 32), Cursor = Cursors.Hand };
+
+            PictureBox pic = new PictureBox { Size = new Size(200, 130), Dock = DockStyle.Top, BackColor = Color.FromArgb(40, 40, 50), Cursor = Cursors.Hand, SizeMode = PictureBoxSizeMode.Zoom };
+            Label lblNota = new Label { Text = nota, ForeColor = Color.Gold, Font = new Font("Segoe UI", 9, FontStyle.Bold), Location = new Point(10, 105), AutoSize = true, BackColor = Color.FromArgb(160, 0, 0, 0), Cursor = Cursors.Hand };
+
+            try
+            {
+                string postersDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Posters");
+                string fileName = titulo.Replace(' ', '_');
+                string pathJpg = Path.Combine(postersDir, fileName + ".jpg");
+                string pathPng = Path.Combine(postersDir, fileName + ".png");
+
+                if (File.Exists(pathJpg))
+                {
+                    using (var fs = File.OpenRead(pathJpg))
+                    {
+                        pic.Image = Image.FromStream(fs);
+                    }
+                }
+                else if (File.Exists(pathPng))
+                {
+                    using (var fs = File.OpenRead(pathPng))
+                    {
+                        pic.Image = Image.FromStream(fs);
+                    }
+                }
+                else
+                {
+                    var placeholder = new Label { Text = $"[ Capa:\n{titulo} ]", ForeColor = Color.Gray, TextAlign = ContentAlignment.MiddleCenter, Dock = DockStyle.Fill, BackColor = Color.FromArgb(40, 40, 50) };
+                    pic.Controls.Add(placeholder);
+                }
+            }
+            catch
+            {
+                var placeholder = new Label { Text = $"[ Capa:\n{titulo} ]", ForeColor = Color.Gray, TextAlign = ContentAlignment.MiddleCenter, Dock = DockStyle.Fill, BackColor = Color.FromArgb(40, 40, 50) };
+                pic.Controls.Add(placeholder);
+            }
+
+            pic.Controls.Add(lblNota);
+
+            Label lblTitulo = new Label { Text = titulo, ForeColor = Color.White, Font = new Font("Segoe UI", 9, FontStyle.Bold), Location = new Point(5, 138), Size = new Size(190, 34), Cursor = Cursors.Hand };
+            Label lblDesc = new Label { Text = info, ForeColor = Color.Gray, Font = new Font("Segoe UI", 8), Location = new Point(5, 175), Size = new Size(190, 20), Cursor = Cursors.Hand };
+
+            card.Controls.AddRange(new Control[] { pic, lblTitulo, lblDesc });
+
+            EventHandler gerenciarClique = (s, e) => {
+                DadosCinema.FilmeSelecionado = titulo;
+                Form2 telaHorarios = new Form2();
+                telaHorarios.Show();
+                this.Hide();
+            };
+
+            card.Click += gerenciarClique;
+            pic.Click += gerenciarClique;
+            lblNota.Click += gerenciarClique;
+            lblTitulo.Click += gerenciarClique;
+            lblDesc.Click += gerenciarClique;
+
+            return card;
+        }
+    }
+}

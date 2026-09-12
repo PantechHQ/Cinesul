@@ -1,0 +1,135 @@
+﻿using System;
+using System.Drawing;
+using System.Windows.Forms;
+
+namespace CineSulApp
+{
+    public partial class Form4 : Form
+    {
+        private Label lblTotalItensLateral;
+        private Label lblTotalValorLateral;
+        private Label lblQtdInteira;
+        private Label lblQtdMeia;
+
+        public Form4()
+        {
+            InitializeComponent();
+            {
+                this.FormBorderStyle = FormBorderStyle.None; // Remove as bordas e a barra de título
+                this.WindowState = FormWindowState.Maximized; // Ocupa a tela inteira, cobrindo a barra de tarefas
+
+            }
+            ConfigurarTela();
+            ConstruirInterface();
+            AtualizarCarrinhoLateral();
+        }
+
+        private void ConfigurarTela()
+        {
+            this.Text = "Tipo de Ingresso - Cíne Sul";
+            this.Size = new Size(1024, 900);
+            this.BackColor = Color.FromArgb(10, 15, 28);
+            this.StartPosition = FormStartPosition.CenterScreen;
+        }
+
+        private void ConstruirInterface()
+        {
+            // HEADER padronizado
+            this.Controls.Add(NavigationHelper.CreateHeader(this));
+
+            // SIDEBAR LATERAL ESQUERDA
+            Panel sidebar = new Panel { Dock = DockStyle.Left, Width = 240, BackColor = Color.FromArgb(8, 11, 20), Padding = new Padding(20) };
+            this.Controls.Add(sidebar);
+
+            Label lblFilme = new Label { Text = DadosCinema.FilmeSelecionado, ForeColor = Color.White, Font = new Font("Segoe UI", 12, FontStyle.Bold), Location = new Point(20, 30), Size = new Size(200, 50) };
+            Label lblSessao = new Label { Text = $"{DadosCinema.CinemaSelecionado}\n\nSessão: {DadosCinema.HorarioSelecionado}", ForeColor = Color.Silver, Font = new Font("Segoe UI", 9), Location = new Point(20, 90), Size = new Size(200, 80) };
+
+            Panel boxValores = new Panel { Size = new Size(200, 120), Location = new Point(20, 220), BackColor = Color.FromArgb(24, 28, 40) };
+            lblTotalItensLateral = new Label { Text = "Itens: 0", ForeColor = Color.White, Font = new Font("Segoe UI", 9), Location = new Point(15, 20), AutoSize = true };
+            lblTotalValorLateral = new Label { Text = "Total: R$ 0,00", ForeColor = Color.LimeGreen, Font = new Font("Segoe UI", 12, FontStyle.Bold), Location = new Point(15, 65), AutoSize = true };
+            boxValores.Controls.AddRange(new Control[] { lblTotalItensLateral, lblTotalValorLateral });
+            sidebar.Controls.AddRange(new Control[] { lblFilme, lblSessao, boxValores });
+
+            // ÁREA CENTRAL
+            Panel mainArea = new Panel { Dock = DockStyle.Fill, BackColor = Color.FromArgb(10, 15, 28) };
+            this.Controls.Add(mainArea);
+            mainArea.BringToFront();
+
+            Label lblTitulo = new Label { Text = "Escolha o tipo de ingresso", ForeColor = Color.White, Font = new Font("Segoe UI", 18, FontStyle.Bold), Location = new Point(50, 40), AutoSize = true };
+            mainArea.Controls.Add(lblTitulo);
+
+            // Container Inteira
+            Panel panelInteira = CriarPainelIngresso("Inteira", "R$ 30.00", 50, 110, out lblQtdInteira, true);
+            // Container Meia
+            Panel panelMeia = CriarPainelIngresso("Meia", "R$ 15.00", 50, 210, out lblQtdMeia, false);
+
+            mainArea.Controls.AddRange(new Control[] { panelInteira, panelMeia });
+
+            // Botão Avançar para Bomboniere
+            Button btnAvancar = new Button { Text = "Ir para bomboniere", Size = new Size(240, 45), Location = new Point(230, 360), BackColor = Color.FromArgb(13, 71, 161), ForeColor = Color.White, FlatStyle = FlatStyle.Flat, Font = new Font("Segoe UI", 11, FontStyle.Bold) };
+            btnAvancar.FlatAppearance.BorderSize = 0;
+            btnAvancar.Click += (s, e) => {
+                if (DadosCinema.TotalItens > 0)
+                {
+                    Form5 bomboniere = new Form5();
+                    bomboniere.Show();
+                    this.Hide();
+                }
+                else
+                {
+                    MessageBox.Show("Selecione pelo menos um ingresso.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            };
+            mainArea.Controls.Add(btnAvancar);
+        }
+
+        private Panel CriarPainelIngresso(string tipo, string preco, int x, int y, out Label lblQuantidade, bool isInteira)
+        {
+            Panel p = new Panel { Size = new Size(600, 80), Location = new Point(x, y), BackColor = Color.FromArgb(28, 28, 36) };
+
+            Label lblTipo = new Label { Text = tipo, ForeColor = Color.White, Font = new Font("Segoe UI", 12, FontStyle.Bold), Location = new Point(70, 18), AutoSize = true };
+            Label lblPreco = new Label { Text = preco, ForeColor = Color.Gray, Font = new Font("Segoe UI", 10), Location = new Point(70, 42), AutoSize = true };
+
+            // Controles de numeração
+            Button btnMenos = new Button { Text = "-", Size = new Size(35, 30), Location = new Point(440, 25), BackColor = Color.FromArgb(63, 114, 252), ForeColor = Color.White, FlatStyle = FlatStyle.Flat };
+            Label lblQtd = new Label { Text = "0", ForeColor = Color.White, Font = new Font("Segoe UI", 11, FontStyle.Bold), Location = new Point(480, 29), Size = new Size(30, 25), TextAlign = ContentAlignment.MiddleCenter, BackColor = Color.FromArgb(18, 18, 24) };
+            Button btnMais = new Button { Text = "+", Size = new Size(35, 30), Location = new Point(515, 25), BackColor = Color.FromArgb(63, 114, 252), ForeColor = Color.White, FlatStyle = FlatStyle.Flat };
+
+            btnMenos.FlatAppearance.BorderSize = 0;
+            btnMais.FlatAppearance.BorderSize = 0;
+
+            btnMais.Click += (s, e) => {
+                // Limitar seleção para não exceder número de assentos selecionados em Form3
+                int limite = DadosCinema.QtdAssentosSelecionados;
+                int totalAntes = DadosCinema.TotalItens;
+                if (totalAntes < limite)
+                {
+                    if (isInteira) DadosCinema.QtdInteira++; else DadosCinema.QtdMeia++;
+                    lblQtd.Text = isInteira ? DadosCinema.QtdInteira.ToString() : DadosCinema.QtdMeia.ToString();
+                    AtualizarCarrinhoLateral();
+                }
+                else
+                {
+                    MessageBox.Show($"Você só pode selecionar até {limite} ingressos (igual ao número de assentos escolhidos).", "Limite atingido", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            };
+
+            btnMenos.Click += (s, e) => {
+                if (isInteira && DadosCinema.QtdInteira > 0) DadosCinema.QtdInteira--;
+                if (!isInteira && DadosCinema.QtdMeia > 0) DadosCinema.QtdMeia--;
+                lblQtd.Text = isInteira ? DadosCinema.QtdInteira.ToString() : DadosCinema.QtdMeia.ToString();
+                AtualizarCarrinhoLateral();
+            };
+
+            p.Controls.AddRange(new Control[] { lblTipo, lblPreco, btnMenos, lblQtd, btnMais });
+            lblQuantidade = lblQtd;
+            return p;
+        }
+
+        private void AtualizarCarrinhoLateral()
+        {
+            lblTotalItensLateral.Text = $"Itens: {DadosCinema.TotalItens}";
+            lblTotalValorLateral.Text = $"Total: R$ {DadosCinema.TotalValor:N2}";
+        }
+    }
+}

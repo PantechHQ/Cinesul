@@ -1,0 +1,380 @@
+﻿// Tela que apresenta o catálogo de filmes com categorias e ações (favoritar, ver comentários, ver detalhes)
+using System; // tipos fundamentais e eventos
+using System.Drawing; // controle de cores, pontos e tamanhos
+using System.IO; // manipulação de arquivos (para carregar posters)
+using System.Windows.Forms; // controles visuais
+
+namespace CineSulApp
+{
+    // Classe que representa a janela de catálogo
+    public partial class Form9 : Form
+    {
+        // Painel onde os cards de filme serão adicionados
+        private FlowLayoutPanel flowLayoutFilmes;
+        // Categoria atualmente selecionada (padrão: Ação)
+        private string categoriaAtual = "Ação";
+
+        // Construtor: executado quando a janela é criada
+        public Form9()
+        {
+            InitializeComponent();
+            {
+                // Remove borda e abre em tela cheia para uma experiência imersiva
+                this.FormBorderStyle = FormBorderStyle.None;
+                this.WindowState = FormWindowState.Maximized;
+
+            }
+            // Configura parâmetros visuais e monta a interface
+            ConfigurarTela();
+            ConstruirInterface();
+            // Carrega filmes da categoria padrão
+            CarregarFilmesPorCategoria(categoriaAtual);
+        }
+
+        // Método exigido pelo Designer (pode ficar vazio)
+        private void Form9_Load(object sender, EventArgs e)
+        {
+            // Mantido para compatibilidade com o Designer do Visual Studio
+        }
+
+        // Define título, tamanho e cor de fundo da janela
+        private void ConfigurarTela()
+        {
+            this.Text = "Catálogo de Filmes - Cíne Sul";
+            this.Size = new Size(1024, 900);
+            this.BackColor = Color.FromArgb(10, 15, 28);
+            this.StartPosition = FormStartPosition.CenterScreen;
+        }
+
+        // Monta a interface: cabeçalho, barra de categorias e painel de filmes
+        private void ConstruirInterface()
+        {
+            // Adiciona o cabeçalho padrão da aplicação
+            this.Controls.Add(NavigationHelper.CreateHeader(this));
+
+            // Painel principal central
+            Panel mainPanel = new Panel { Dock = DockStyle.Fill, Padding = new Padding(40, 20, 40, 20) };
+            this.Controls.Add(mainPanel);
+            mainPanel.BringToFront();
+
+            // Título grande da tela
+            Label lblTitulo = new Label
+            {
+                Text = "Catálogo de filmes",
+                ForeColor = Color.White,
+                Font = new Font("Segoe UI", 20, FontStyle.Bold),
+                Location = new Point(40, 20),
+                AutoSize = true
+            };
+            mainPanel.Controls.Add(lblTitulo);
+
+            // Barra de categorias (Ação, Comédia, Animação, Drama)
+            string[] categorias = { "Ação", "Comédia", "Animação", "Drama" };
+            int posX = 40;
+            foreach (string cat in categorias)
+            {
+                Button btnCat = new Button
+                {
+                    Text = cat,
+                    Size = new Size(110, 36),
+                    Location = new Point(posX, 70),
+                    FlatStyle = FlatStyle.Flat,
+                    Font = new Font("Segoe UI", 9, FontStyle.Bold),
+                    Cursor = Cursors.Hand
+                };
+
+                // Destaque visual para a categoria selecionada
+                if (cat == categoriaAtual)
+                {
+                    btnCat.BackColor = Color.FromArgb(63, 114, 252);
+                    btnCat.ForeColor = Color.White;
+                }
+                else
+                {
+                    btnCat.BackColor = Color.FromArgb(30, 35, 48);
+                    btnCat.ForeColor = Color.Gray;
+                }
+
+                btnCat.FlatAppearance.BorderSize = 0;
+                // Ao clicar, atualiza o visual dos botões e carrega os filmes da categoria
+                btnCat.Click += (s, e) =>
+                {
+                    categoriaAtual = cat;
+
+                    foreach (Control ctrl in mainPanel.Controls)
+                    {
+                        if (ctrl is Button btn && Array.IndexOf(categorias, btn.Text) >= 0)
+                        {
+                            if (btn.Text == categoriaAtual)
+                            {
+                                btn.BackColor = Color.FromArgb(63, 114, 252);
+                                btn.ForeColor = Color.White;
+                            }
+                            else
+                            {
+                                btn.BackColor = Color.FromArgb(30, 35, 48);
+                                btn.ForeColor = Color.Gray;
+                            }
+                        }
+                    }
+
+                    CarregarFilmesPorCategoria(categoriaAtual);
+                };
+
+                mainPanel.Controls.Add(btnCat);
+                posX += 120;
+            }
+
+            // Linha divisória visual
+            Panel linha1 = new Panel { Size = new Size(980, 1), Location = new Point(40, 125), BackColor = Color.FromArgb(40, 45, 60) };
+            mainPanel.Controls.Add(linha1);
+
+            // Painel com rolagem que receberá os cards de filmes
+            flowLayoutFilmes = new FlowLayoutPanel
+            {
+                Location = new Point(40, 140),
+                Size = new Size(980, 660),
+                AutoScroll = true,
+                BackColor = Color.Transparent
+            };
+            mainPanel.Controls.Add(flowLayoutFilmes);
+        }
+
+        // Método que adiciona um filme aos favoritos no banco de dados
+        private void AdicionarFavorito(string titulo, string detalhes, string categoria)
+        {
+            // Verifica se o usuário está logado
+            if (!DadosCinema.IsLoggedIn || string.IsNullOrEmpty(DadosCinema.LoggedUserEmail))
+            {
+                MessageBox.Show("Faça login para favoritar filmes.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                string connectionString = "Host=localhost;Port=5432;Database=cinesuldb;Username=postgres;Password=root;";
+                using (var conn = new Npgsql.NpgsqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    // Evita duplicados: verifica se já existe favorito para este usuário e filme
+                    string sqlCheck = "SELECT COUNT(*) FROM Favoritos WHERE UserEmail = @email AND Titulo = @titulo";
+                    using (var cmdCheck = new Npgsql.NpgsqlCommand(sqlCheck, conn))
+                    {
+                        cmdCheck.Parameters.AddWithValue("@email", DadosCinema.LoggedUserEmail);
+                        cmdCheck.Parameters.AddWithValue("@titulo", titulo);
+                        long count = Convert.ToInt64(cmdCheck.ExecuteScalar());
+                        if (count > 0)
+                        {
+                            MessageBox.Show("Esse filme já está nos seus favoritos.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            return;
+                        }
+                    }
+
+                    // Insere favorito
+                    string sqlInsert = "INSERT INTO Favoritos (UserEmail, Categoria, Titulo, Detalhes) VALUES (@email, @categoria, @titulo, @detalhes)";
+                    using (var cmd = new Npgsql.NpgsqlCommand(sqlInsert, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@email", DadosCinema.LoggedUserEmail);
+                        cmd.Parameters.AddWithValue("@categoria", categoria);
+                        cmd.Parameters.AddWithValue("@titulo", titulo);
+                        cmd.Parameters.AddWithValue("@detalhes", detalhes);
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    MessageBox.Show("Filme adicionado aos favoritos!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao favoritar: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        // Carrega a lista de filmes conforme a categoria selecionada
+        private void CarregarFilmesPorCategoria(string categoria)
+        {
+            flowLayoutFilmes.Controls.Clear();
+
+            if (categoria == "Ação")
+            {
+                flowLayoutFilmes.Controls.Add(CriarCardFilme("Deus e o Diabo na Terra do Sol", "9.0", "Ação • Drama"));
+                flowLayoutFilmes.Controls.Add(CriarCardFilme("Xuxinha e Guto Contra os Monstros do Espaço", "2.9", "Ação • Animação"));
+            }
+            else if (categoria == "Comédia")
+            {
+                flowLayoutFilmes.Controls.Add(CriarCardFilme("O Auto da Compadecida", "8.6", "Comédia • Aventura"));
+                flowLayoutFilmes.Controls.Add(CriarCardFilme("Internet - O Filme", "3.1", "Comédia • Nacional"));
+                flowLayoutFilmes.Controls.Add(CriarCardFilme("Minions", "6.7", "Comédia • Animação"));
+                flowLayoutFilmes.Controls.Add(CriarCardFilme("Meu malvado favorito", "7.6", "Comédia • Animação"));
+            }
+            else if (categoria == "Animação")
+            {
+                flowLayoutFilmes.Controls.Add(CriarCardFilme("Ratatoing", "1.9", "Animação • Infantil"));
+                flowLayoutFilmes.Controls.Add(CriarCardFilme("Barquinhos", "1.2", "Animação • Infantil"));
+                flowLayoutFilmes.Controls.Add(CriarCardFilme("Xuxinha e Guto Contra os Monstros do Espaço", "2.9", "Animação • Aventura"));
+            }
+            else if (categoria == "Drama")
+            {
+                flowLayoutFilmes.Controls.Add(CriarCardFilme("Central do Brasil", "8.0", "Drama • Nacional"));
+                flowLayoutFilmes.Controls.Add(CriarCardFilme("Hoje Eu Quero Voltar Sozinho", "7.9", "Drama • Romance"));
+            }
+        }
+
+        // Cria o card visual para cada filme, com poster, título, botões e eventos
+        private Panel CriarCardFilme(string titulo, string nota, string detalhes)
+        {
+            Panel card = new Panel
+            {
+                Size = new Size(220, 340),
+                Margin = new Padding(12),
+                BackColor = Color.Transparent,
+                Cursor = Cursors.Hand
+            };
+
+            PictureBox picPoster = new PictureBox
+            {
+                Size = new Size(220, 230),
+                Location = new Point(0, 0),
+                BackColor = Color.FromArgb(35, 42, 60),
+                SizeMode = PictureBoxSizeMode.Zoom
+            };
+
+            try
+            {
+                // Tenta carregar imagem do poster a partir da pasta "Posters"
+                string postersDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Posters");
+                string fileName = titulo.Replace(' ', '_');
+                string pathJpg = Path.Combine(postersDir, fileName + ".jpg");
+                string pathPng = Path.Combine(postersDir, fileName + ".png");
+
+                if (File.Exists(pathJpg))
+                {
+                    using (var fs = File.OpenRead(pathJpg)) picPoster.Image = Image.FromStream(fs);
+                }
+                else if (File.Exists(pathPng))
+                {
+                    using (var fs = File.OpenRead(pathPng)) picPoster.Image = Image.FromStream(fs);
+                }
+                else
+                {
+                    // Se não existir imagem, mostra um texto substituto
+                    Label lblPosterText = new Label { Text = $"[ Capa:\n{titulo} ]", ForeColor = Color.Gray, TextAlign = ContentAlignment.MiddleCenter, Dock = DockStyle.Fill };
+                    picPoster.Controls.Add(lblPosterText);
+                }
+            }
+            catch
+            {
+                Label lblPosterText = new Label { Text = $"[ Capa:\n{titulo} ]", ForeColor = Color.Gray, TextAlign = ContentAlignment.MiddleCenter, Dock = DockStyle.Fill };
+                picPoster.Controls.Add(lblPosterText);
+            }
+
+            Label lblNota = new Label
+            {
+                Text = $"★ {nota}",
+                ForeColor = Color.Gold,
+                Font = new Font("Segoe UI", 8, FontStyle.Bold),
+                Location = new Point(0, 235),
+                AutoSize = true
+            };
+
+            Label lblTitulo = new Label
+            {
+                Text = titulo,
+                ForeColor = Color.White,
+                Font = new Font("Segoe UI", 9, FontStyle.Bold),
+                Location = new Point(0, 252),
+                Size = new Size(220, 20)
+            };
+
+            Label lblDetalhes = new Label
+            {
+                Text = detalhes,
+                ForeColor = Color.Gray,
+                Font = new Font("Segoe UI", 8),
+                Location = new Point(0, 272),
+                Size = new Size(220, 20)
+            };
+
+            // Botão para abrir a tela de comentários do filme
+            Button btnComentarios = new Button
+            {
+                Text = "Comentários",
+                Size = new Size(110, 28),
+                Location = new Point(0, 300),
+                BackColor = Color.FromArgb(24, 28, 38),
+                ForeColor = Color.White,
+                FlatStyle = FlatStyle.Flat,
+                Cursor = Cursors.Hand
+            };
+            btnComentarios.FlatAppearance.BorderColor = Color.FromArgb(63, 114, 252);
+            btnComentarios.FlatAppearance.BorderSize = 1;
+            btnComentarios.Click += (s, e) =>
+            {
+                FormComentarios tela = new FormComentarios(titulo);
+                tela.Show();
+                this.Close();
+            };
+
+            // Evento que abre a tela de detalhes do filme
+            EventHandler selecionarFilme = (s, e) =>
+            // Se o usuário não estiver logado, guarda a tela destino e abre o login
+            {         
+            if (!DadosCinema.IsLoggedIn)
+                    {
+                        DadosCinema.TelaRetorno = () => new Form6(); // lembra que após login deve abrir Form6
+                        FormLogin login = new FormLogin();
+                        login.Show();
+                        this.Hide();
+                        return;
+                    }
+
+                    // Se estiver logado, abre a tela de pagamento (Form6)
+                    Form6 telaPagamento = new Form6();
+                    telaPagamento.Show();
+                    this.Hide();
+                };
+
+            // Botão para alugar/comprar (abre detalhes)
+            Button btnComprar = new Button
+            {
+                Text = "Alugar",
+                Size = new Size(100, 28),
+                Location = new Point(120, 300),
+                BackColor = Color.FromArgb(63, 114, 252),
+                ForeColor = Color.White,
+                FlatStyle = FlatStyle.Flat,
+                Cursor = Cursors.Hand
+            };
+            btnComprar.FlatAppearance.BorderSize = 0;
+            btnComprar.Click += selecionarFilme;
+
+            // Botão para favoritar o filme
+            Button btnFavoritar = new Button
+            {
+                Text = "❤",
+                Size = new Size(30, 28),
+                Location = new Point(190, 300),
+                BackColor = Color.FromArgb(24, 28, 38),
+                ForeColor = Color.White,
+                FlatStyle = FlatStyle.Flat,
+                Cursor = Cursors.Hand
+            };
+            btnFavoritar.FlatAppearance.BorderColor = Color.FromArgb(220, 60, 90);
+            btnFavoritar.FlatAppearance.BorderSize = 1;
+            btnFavoritar.Click += (s, e) => AdicionarFavorito(titulo, detalhes, categoriaAtual);
+
+            // Adiciona controles ao card
+            card.Controls.AddRange(new Control[] { picPoster, lblNota, lblTitulo, lblDetalhes, btnComentarios, btnComprar, btnFavoritar });
+
+            // Também adiciona um segundo conjunto sem o botão de favoritar (historicamente duplicado no layout original)
+            card.Controls.AddRange(new Control[] { picPoster, lblNota, lblTitulo, lblDetalhes, btnComentarios, btnComprar });
+
+            // Permite clicar em qualquer parte do card ou na imagem para abrir detalhes
+            card.Click += selecionarFilme;
+            picPoster.Click += selecionarFilme;
+
+            return card;
+        }
+    }
+}
