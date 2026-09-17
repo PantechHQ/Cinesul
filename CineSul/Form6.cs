@@ -52,7 +52,7 @@ namespace CineSulApp
             // Opções de pagamento: cartão crédito, débito e Pix
             mainArea.Controls.Add(CriarBotaoPagamento("💳  Cartão de crédito", 50, 120, () => AvancarParaCartao()));
             mainArea.Controls.Add(CriarBotaoPagamento("💳  Cartão de débito", 50, 210, () => AvancarParaCartao()));
-            mainArea.Controls.Add(CriarBotaoPagamento("📱  Pix", 50, 300, () => AvancarDiretoIngresso()));
+           // mainArea.Controls.Add(CriarBotaoPagamento("📱  Pix", 50, 300, () => AvancarDiretoIngresso()));
         }
 
         // Cria um painel clicável que representa uma opção de pagamento
